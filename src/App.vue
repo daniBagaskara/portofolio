@@ -1,5 +1,13 @@
 <template>
-  <h1 class="text-2xl font-bold text-center mt-10">
-    Hi, this app ready to develop with vue and tailwind css
-  </h1>
+  <div class="min-h-screen bg-[#111827]">
+    <Navbar />
+    <Hero />
+  </div>
 </template>
+
+<script setup>
+import { defineAsyncComponent } from "vue";
+
+const Navbar = defineAsyncComponent(() => import("./components/Navbar.vue"));
+const Hero = defineAsyncComponent(() => import("./components/Hero.vue"));
+</script>
