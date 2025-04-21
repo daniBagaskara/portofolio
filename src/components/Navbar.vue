@@ -8,20 +8,21 @@
 
     <!-- Desktop Menu -->
     <nav class="hidden md:flex space-x-6">
-      <ul class="flex space-x-6">
-        <li v-for="item in menu" :key="item.name">
-          <a
-            :href="item.link"
-            class="relative group transition duration-300 ease-in-out text-lg"
-            @click.prevent="scrollToSection(item.link)"
-          >
-            {{ item.name }}
-            <span
-              class="absolute left-0 -bottom-1 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"
-            ></span>
-          </a>
-        </li>
-      </ul>
+      <a
+        v-for="item in menu"
+        :key="item.link"
+        :href="'#' + item.link"
+        @click.prevent="scrollToSection(item.link)"
+        class="relative group text-xl transition duration-300 text-white"
+      >
+        {{ item.name }}
+        <span
+          class="absolute left-0 -bottom-1 h-0.5 bg-yellow-400 transition-all duration-300"
+          :class="[
+            activeSection === item.link ? 'w-full' : 'w-0 group-hover:w-full',
+          ]"
+        ></span>
+      </a>
     </nav>
 
     <!-- Mobile Toggle Button -->
@@ -66,45 +67,46 @@
         v-if="isOpen"
         class="absolute top-0 left-0 w-full h-screen bg-gray-900 flex flex-col items-center justify-center space-y-6 text-xl md:hidden"
       >
-        <ul>
-          <li
-            v-for="item in menu"
-            :key="item.name"
-            class="py-4 w-full text-center"
-          >
-            <a
-              :href="item.link"
-              class="text-white hover:text-yellow-400 transition duration-300 text-lg"
-              @click.prevent="scrollToSection(item.link)"
-              >{{ item.name }}</a
-            >
-          </li>
-        </ul>
+        <a
+          v-for="item in menu"
+          :key="item.link"
+          :href="'#' + item.link"
+          @click.prevent="scrollToSection(item.link)"
+          class="relative group text-xl transition duration-300 text-white"
+        >
+          {{ item.name }}
+          <span
+            class="absolute left-0 -bottom-1 h-0.5 bg-yellow-400 transition-all duration-300"
+            :class="[
+              activeSection === item.link ? 'w-full' : 'w-0 group-hover:w-full',
+            ]"
+          ></span>
+        </a>
       </nav>
     </transition>
   </header>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { defineProps, defineEmits, ref } from "vue";
 
 const isOpen = ref(false);
-const menu = ref([
-  { name: "Service", link: "#service" },
-  { name: "About Me", link: "#about" },
-  { name: "Skills", link: "#skills" },
-  { name: "Projects", link: "#projects" },
-  { name: "Testimonials", link: "#testimonials" },
-  { name: "Contact", link: "#contact" },
-]);
+const props = defineProps({
+  activeSection: String,
+});
+const emit = defineEmits(["scroll-to"]);
 
-function scrollToSection(id) {
-  const el = document.getElementById(id);
-  if (el) {
-    el.scrollIntoView({ behavior: "smooth" });
-    isOpen.value = false; // untuk nutup menu mobile
-  }
-}
+const menu = [
+  { name: "Service", link: "service" },
+  { name: "Skills", link: "skills" },
+  { name: "Projects", link: "projects" },
+  { name: "Contact", link: "contact" },
+];
+
+const scrollToSection = (id) => {
+  emit("scroll-to", id);
+  isOpen.value = false; // Close the menu after clicking
+};
 </script>
 
 <style scoped>
