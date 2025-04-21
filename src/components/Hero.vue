@@ -185,7 +185,7 @@
 
     <!-- Floating scrolling hint -->
     <div
-      class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center text-gray-400"
+      class="hidden sm:absolute bottom-8 left-1/2 transform -translate-x-1/2 sm:flex flex-col items-center text-gray-400"
     >
       <span class="text-sm mb-2">Scroll down</span>
       <div
